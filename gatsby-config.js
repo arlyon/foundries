@@ -5,9 +5,9 @@ const fullConfig = resolveConfig(tailwindConfig);
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Tailwind`,
+    title: `The Foundries`,
     description: `Gatsby starter styled with Tailwind`,
-    author: `@taylorbryant`,
+    author: `@arlyon`,
   },
   plugins: [
     `gatsby-plugin-eslint`,
@@ -36,6 +36,15 @@ module.exports = {
         ],
       },
     },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/src/images/`
+      }
+    },
   ],
 };
