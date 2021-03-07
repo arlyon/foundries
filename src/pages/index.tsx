@@ -67,20 +67,39 @@ function IndexPage() {
           <Link
             style={{ textDecoration: "underline" }}
             key={"Contact"}
-            to={"/contact"}
+            to={"/contact/"}
           >
             Get in touch
           </Link>{" "}
           and we'll put you in contact with someone free of charge.
         </p>
+        <div className="flex justify-center mt-16 text-2xl font-bold space-x-8">
+          <a
+            className="bg-yellow-600 px-4 py-2"
+            href="mailto:alex@foundries.dev"
+          >
+            Contact Us
+          </a>
+          <Link
+            key={"Case Studies"}
+            to={"/case-studies/"}
+            className="bg-indigo-600 px-4 py-2"
+          >
+            See Past Projects
+          </Link>
+        </div>
       </section>
       <section className="mt-32">
         <h2 className="text-white font-bold text-5xl my-16 text-center">
-          <img className="inline-block w-16 mr-4" src={foundryLogo} />
+          <img
+            className="inline-block w-16 mr-4"
+            src={foundryLogo}
+            alt="Foundry icon"
+          />
           Core Values
         </h2>
         {Object.entries(values).map(([title, elem]) => (
-          <div className="flex mt-8 flex-col sm:flex-row">
+          <div className="flex mt-8 flex-col sm:flex-row" key={title}>
             <h3 className="flex-1 mb-4 mr-8 sm:text-right text-3xl">{title}</h3>
             <p className="flex-1 text-lg">{elem}</p>
           </div>

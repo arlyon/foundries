@@ -54,14 +54,13 @@ export const Footer = () => {
               <br />
               13A Clermiston Rd N<br />
               Edinburgh
-              <br />
-              <br />
-              We're always looking for
-              <br />
-              good people.
             </div>
           </div>
         </div>
+        <p className="mt-16">
+          We're always looking for good people. If you want to work flexibly on
+          the cutting edge send us a message.
+        </p>
         <hr className="my-16" />
         <div className="text-center mb-8">Copyright 2021 - Lyon Foundries</div>
       </div>

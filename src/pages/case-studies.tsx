@@ -14,7 +14,7 @@ function CaseStudies() {
     query {
       workout: file(relativePath: { eq: "workout-mockup.png" }) {
         childImageSharp {
-          gatsbyImageData(layout: FULL_WIDTH)
+          gatsbyImageData(layout: CONSTRAINED, width: 200)
         }
       }
     }
@@ -29,15 +29,12 @@ function CaseStudies() {
       <section className="flex flex-wrap justify-center">
         <GatsbyImage
           className="m-12"
-          style={{
-            filter: "drop-shadow(-0.5em 0 1em rgba(0, 16, 255, 0.2))",
-            width: "200px",
-          }}
+          style={{ width: "200px" }}
           alt="Mockup of the app"
           image={getImage(workout)}
         />
         <div className="flex flex-1 flex-col justify-center min-w-min">
-          <h2 className="text-2xl font-bold mb-4" style={{ minWidth: "200px" }}>
+          <h2 className="text-2xl font-bold mb-4" style={{ minWidth: "280px" }}>
             Fulcrum Fitness App
           </h2>
           <TechFlags
@@ -77,7 +74,7 @@ const TechFlags = ({ tech, className = "" }) => {
     <div
       className={`${color} px-4 rounded-2xl flex flex-row m-1 justify-center items-center`}
     >
-      <img style={{ height: "1em", marginRight: 4 }} src={icon} />
+      <img style={{ height: "1em", marginRight: 4 }} src={icon} alt={name} />
       {name}
     </div>
   ));
