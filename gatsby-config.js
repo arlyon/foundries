@@ -19,7 +19,7 @@ module.exports = {
         short_name: `starter`,
         start_url: `/`,
         background_color: fullConfig.theme.colors.white,
-        theme_color: fullConfig.theme.colors.green["500"],
+        theme_color: fullConfig.theme.colors.yellow["600"],
         display: `minimal-ui`,
         icon: `src/images/tailwind-icon.png`,
       },
@@ -39,6 +39,9 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-offline`,
+    `gatsby-plugin-layout`,
+    `gatsby-plugin-image`,
+    `gatsby-plugin-netlify`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {

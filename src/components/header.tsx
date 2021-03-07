@@ -1,21 +1,14 @@
 import { graphql, useStaticQuery, Link } from "gatsby";
 import React, { useState } from "react";
-import Img from "gatsby-image";
+import { StaticImage } from "gatsby-plugin-image";
 
-function Header() {
+export const Header = () => {
   const [isExpanded, toggleExpansion] = useState(false);
-  const { site, file } = useStaticQuery(graphql`
+  const { site } = useStaticQuery(graphql`
     query {
       site {
         siteMetadata {
           title
-        }
-      }
-      file(relativePath: { eq: "logo.png" }) {
-        childImageSharp {
-          fixed(width: 40, height: 40, fit: CONTAIN, background: "transparent") {
-            ...GatsbyImageSharpFixed
-          }
         }
       }
     }
@@ -27,27 +20,36 @@ function Header() {
       title: `About`,
     },
     {
-      route: `/contact`,
-      title: `Contact`,
+      route: `/case-studies`,
+      title: `Case Studies`,
     },
+    // {
+    //   route: `/contact`,
+    //   title: `Contact`,
+    // },
   ].map((link) => (
     <Link
       className="block mt-4 text-white no-underline md:inline-block md:mt-0 md:ml-6"
       key={link.title}
       to={link.route}
+      getProps={({ isCurrent }) =>
+        isCurrent ? { style: { textDecoration: "underline" } } : null
+      }
     >
       {link.title}
     </Link>
-  ))
-
+  ));
 
   return (
     <header>
-      <div className="flex flex-wrap items-center justify-between max-w-4xl p-4 mx-auto md:p-8 border-white border-b">
+      <div className="flex flex-wrap items-center justify-between max-w-4xl p-4 mx-auto md:p-8 md:border-b">
         <Link to="/">
           <h1 className="flex items-center text-white no-underline">
-            <Img
-              fixed={file.childImageSharp.fixed}
+            <StaticImage
+              src="../images/logo.png"
+              alt="Bottom logo"
+              width={32}
+              className="mr-2"
             />
             <span className="text-xl font-bold tracking-tight">
               {site.siteMetadata.title}
@@ -56,7 +58,7 @@ function Header() {
         </Link>
 
         <button
-          className="items-center block px-3 py-2 text-white border border-white rounded md:hidden"
+          className="items-center block px-3 py-2 text-black border bg-white rounded md:hidden"
           onClick={() => toggleExpansion(!isExpanded)}
         >
           <svg
@@ -70,13 +72,15 @@ function Header() {
         </button>
 
         <nav
-          className={`${isExpanded ? `block` : `hidden`} md:block md:items-center w-full md:w-auto`}
+          className={`overflow-hidden md:block md:items-center w-full md:w-auto`}
+          style={{
+            maxHeight: isExpanded ? 0 : routes.length * 40,
+            transition: "max-height 0.25s ease-in-out",
+          }}
         >
           {routes}
         </nav>
       </div>
     </header>
   );
-}
-
-export default Header;
+};
