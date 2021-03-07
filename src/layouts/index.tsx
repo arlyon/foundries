@@ -99,8 +99,10 @@ const Layout: FC = ({ children }) => {
           ref={canvasRef}
           style={{
             position: "fixed",
-            height: "100vh",
-            width: "100vw",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             display: "block",
           }}
         />
@@ -110,6 +112,7 @@ const Layout: FC = ({ children }) => {
             display: "flex",
             flexDirection: "column",
             flex: 1,
+            overflowX: "hidden",
           }}
         >
           <Header />

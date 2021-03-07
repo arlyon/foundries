@@ -73,6 +73,7 @@ const TechFlags = ({ tech, className = "" }) => {
   const tags = tech.map(({ name, color, icon }) => (
     <div
       className={`${color} px-4 rounded-2xl flex flex-row m-1 justify-center items-center`}
+      key={name}
     >
       <img style={{ height: "1em", marginRight: 4 }} src={icon} alt={name} />
       {name}

@@ -72,9 +72,9 @@ export const Header = () => {
         </button>
 
         <nav
-          className={`overflow-hidden md:block md:items-center w-full md:w-auto`}
+          className={`overflow-hidden md:block md:items-center w-full md:w-auto max-h-0 md:max-h-20`}
           style={{
-            maxHeight: isExpanded ? 0 : routes.length * 40,
+            maxHeight: isExpanded ? routes.length * 40 : undefined,
             transition: "max-height 0.25s ease-in-out",
           }}
         >

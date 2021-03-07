@@ -15,13 +15,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-tailwind`,
-        short_name: `starter`,
+        name: `The Foundries`,
+        short_name: `Foundries`,
         start_url: `/`,
-        background_color: fullConfig.theme.colors.white,
+        background_color: fullConfig.theme.colors.black,
         theme_color: fullConfig.theme.colors.yellow["600"],
-        display: `minimal-ui`,
-        icon: `src/images/tailwind-icon.png`,
+        display: `standalone`,
+        icon: `src/images/foundry.svg`,
       },
     },
     {

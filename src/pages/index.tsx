@@ -73,9 +73,9 @@ function IndexPage() {
           </Link>{" "}
           and we'll put you in contact with someone free of charge.
         </p>
-        <div className="flex justify-center mt-16 text-2xl font-bold space-x-8">
+        <div className="flex justify-center mt-16 text-2xl font-bold flex-wrap max-w-xl mx-auto">
           <a
-            className="bg-yellow-600 px-4 py-2"
+            className="bg-yellow-600 px-4 py-2 mx-4 my-2 flex-1 text-center min-w-max"
             href="mailto:alex@foundries.dev"
           >
             Contact Us
@@ -83,7 +83,7 @@ function IndexPage() {
           <Link
             key={"Case Studies"}
             to={"/case-studies/"}
-            className="bg-indigo-600 px-4 py-2"
+            className="bg-indigo-600 px-4 py-2 mx-4 my-2 flex-1 text-center min-w-max"
           >
             See Past Projects
           </Link>
