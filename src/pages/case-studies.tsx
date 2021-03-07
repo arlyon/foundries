@@ -1,6 +1,6 @@
 import React from "react";
 import { graphql, useStaticQuery } from "gatsby";
-import Img from "gatsby-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 import { SEO } from "../components/seo";
 
@@ -14,9 +14,7 @@ function CaseStudies() {
     query {
       workout: file(relativePath: { eq: "workout-mockup.png" }) {
         childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          }
+          gatsbyImageData(layout: FULL_WIDTH)
         }
       }
     }
@@ -29,13 +27,14 @@ function CaseStudies() {
         title="Case Studies"
       />
       <section className="flex flex-wrap justify-center">
-        <Img
+        <GatsbyImage
           className="m-12"
           style={{
             filter: "drop-shadow(-0.5em 0 1em rgba(0, 16, 255, 0.2))",
             width: "200px",
           }}
-          fluid={workout.childImageSharp.fluid}
+          alt="Mockup of the app"
+          image={getImage(workout)}
         />
         <div className="flex flex-1 flex-col justify-center min-w-min">
           <h2 className="text-2xl font-bold mb-4" style={{ minWidth: "200px" }}>

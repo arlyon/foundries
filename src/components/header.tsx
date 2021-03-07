@@ -16,11 +16,11 @@ export const Header = () => {
 
   const routes = [
     {
-      route: `/about`,
+      route: `/about/`,
       title: `About`,
     },
     {
-      route: `/case-studies`,
+      route: `/case-studies/`,
       title: `Case Studies`,
     },
     // {

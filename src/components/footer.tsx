@@ -1,5 +1,4 @@
-import { graphql, useStaticQuery, Link } from "gatsby";
-import React, { useState } from "react";
+import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
 
 export const Footer = () => {

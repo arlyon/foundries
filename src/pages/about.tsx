@@ -1,6 +1,6 @@
 import { graphql, useStaticQuery } from "gatsby";
 import React, { FC } from "react";
-import Img from "gatsby-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 import { SEO } from "../components/seo";
 
@@ -9,9 +9,7 @@ function AboutPage() {
     query {
       arlyon: file(relativePath: { eq: "arlyon.jpeg" }) {
         childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
-          }
+          gatsbyImageData(layout: FULL_WIDTH)
         }
       }
     }
@@ -36,7 +34,7 @@ function AboutPage() {
           <PersonCard
             name="Alexander"
             desc="A tech, privacy, and open source enthusiast specialising in distributed systems."
-            image={arlyon.childImageSharp.fluid}
+            image={getImage(arlyon)}
           />
         </section>
       </section>
@@ -55,7 +53,7 @@ type PersonCardProps = {
 const PersonCard: FC<PersonCardProps> = (props) => {
   return (
     <div className="max-w-sm bg-white shadow-lg rounded-lg overflow-hidden my-4">
-      <Img fluid={props.image} alt="Photo of the team member." />
+      <GatsbyImage image={props.image} alt="Photo of the team member." />
       <div className="flex items-center px-6 py-3 bg-gray-900">
         <div
           style={{

@@ -6,7 +6,6 @@
   "dependencies": {
     "gatsby": "3.0.3",
     "gatsby-background-image": "^1.4.1",
-    "gatsby-image": "^3.0.0",
     "gatsby-plugin-image": "^1.0.0",
     "gatsby-plugin-layout": "^2.0.0",
     "gatsby-plugin-manifest": "3.0.0",
