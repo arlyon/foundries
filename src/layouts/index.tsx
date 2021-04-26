@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
-import { getImage, StaticImage } from "gatsby-plugin-image";
 
 import { Header } from "../components/header";
 import { Footer } from "../components/footer";
@@ -14,39 +13,31 @@ const addImage = (src): Promise<HTMLImageElement> => {
   });
 };
 
-const draw = (canvas: HTMLCanvasElement, highlight, background, x, y) => {
+const draw = (canvas: HTMLCanvasElement, highlight, x, y) => {
   const ctx = canvas.getContext("2d");
   const width = (canvas.width = window.innerWidth);
   const height = (canvas.height = window.innerHeight);
 
-  ctx.clearRect(0, 0, width, height);
+  const nearestX = Math.round(x/500) * 500;
+  const nearestY = Math.round(y/499) * 499;
 
-  for (let x = 0; x < width; x += 500) {
-    for (let y = 0; y < height; y += 499) {
-      ctx.drawImage(highlight, x, y);
-    }
-  }
+  ctx.drawImage(highlight, nearestX, nearestY);
+  ctx.drawImage(highlight, nearestX - 500, nearestY);
+  ctx.drawImage(highlight, nearestX, nearestY - 499);
+  ctx.drawImage(highlight, nearestX - 500, nearestY - 499);
 
-  ctx.globalCompositeOperation = "source-in";
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, 300);
   gradient.addColorStop(0, "#b45309");
   gradient.addColorStop(1, "transparent");
+
+  ctx.globalCompositeOperation = "source-in";
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
-  ctx.globalCompositeOperation = "destination-over";
-  ctx.filter = "contrast(2) brightness(1.6)";
-
-  for (let x = 0; x < width; x += 500) {
-    for (let y = 0; y < height; y += 499) {
-      ctx.drawImage(background, x, y);
-    }
-  }
 };
 
 const Layout: FC = ({ children }) => {
   const canvasRef = useRef();
   const [highlight, setImage] = useState<HTMLImageElement>();
-  const [background, setBackground] = useState<HTMLImageElement>();
   const [[mouseX, mouseY], setMouseLoc] = useState([1000000, 1000000]);
 
   const { backgroundImage, highlightImage } = useStaticQuery(graphql`
@@ -71,14 +62,12 @@ const Layout: FC = ({ children }) => {
   useEffect(() => {
     (async () => {
       setImage(await addImage(highlightImage.childImageSharp.fixed.src));
-      setBackground(await addImage(backgroundImage.childImageSharp.fixed.src));
     })();
   }, []);
 
   useEffect(() => {
     const updateLoc = (e) => setMouseLoc([e.clientX, e.clientY]);
-    const redraw = () =>
-      draw(canvasRef.current, highlight, background, mouseX, mouseY);
+    const redraw = () => draw(canvasRef.current, highlight, mouseX, mouseY);
     document.addEventListener("mousemove", updateLoc);
     window.addEventListener("resize", redraw);
     return () => {
@@ -88,9 +77,9 @@ const Layout: FC = ({ children }) => {
   });
 
   useEffect(() => {
-    if (!canvasRef?.current || !highlight || !background) return;
-    draw(canvasRef.current, highlight, background, mouseX, mouseY);
-  }, [canvasRef, highlight, background, mouseX, mouseY]);
+    if (!canvasRef?.current || !highlight) return;
+    draw(canvasRef.current, highlight, mouseX, mouseY);
+  }, [canvasRef, highlight, mouseX, mouseY]);
 
   return useMemo(
     () => (
@@ -104,6 +93,8 @@ const Layout: FC = ({ children }) => {
             left: 0,
             right: 0,
             display: "block",
+            backgroundImage:`url(${backgroundImage.childImageSharp.fixed.src})`,
+            backdropFilter: "contrast(1.4) brightness(1.0)"
           }}
         />
         <div
