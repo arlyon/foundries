@@ -2,6 +2,9 @@ import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
 
 export const Footer = () => {
+  const links = ["async-stripe", "aiobreaker", "bluenoise-rs"].map((name, index) => (
+    <li key={index}><a href={`https://github.com/arlyon/{name}`}>{name}</a></li>
+  ));
   return (
     <footer className="mt-auto pt-16">
       <div className="flex flex-col justify-between max-w-4xl p-4 mx-auto md:p-8">
@@ -16,21 +19,7 @@ export const Footer = () => {
           <div className="flex-1 flex mr-4 flex-wrap">
             <div className="flex-1 min-w-max pt-4">
               <p className="font-bold mb-1">OUR INVOLVEMENT</p>
-              <ul>
-                <li>
-                  <a href="https://github.com/arlyon/async-stripe">
-                    async-stripe
-                  </a>
-                </li>
-                <li>
-                  <a href="https://github.com/arlyon/aiobreaker">aiobreaker</a>
-                </li>
-                <li>
-                  <a href="https://github.com/arlyon/bluenoise-rs">
-                    bluenoise-rs
-                  </a>
-                </li>
-              </ul>
+              <ul>{links}</ul>
             </div>
             <div className="flex-1 min-w-max pt-4 mr-4">
               <p className="font-bold mb-1">WHAT WE DO</p>
