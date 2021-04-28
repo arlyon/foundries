@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
 
 import { Header } from "../components/header";
@@ -81,21 +81,28 @@ const Layout: FC = ({ children }) => {
     draw(canvasRef.current, highlight, mouseX, mouseY);
   }, [canvasRef, highlight, mouseX, mouseY]);
 
+  const fullScreen: CSSProperties = {
+    position: "fixed",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: "block",
+  }
+
   return useMemo(
     () => (
       <div className="flex flex-col min-h-screen font-sans text-white bg-gradient-to-b from-black to-yellow-700">
+        <div 
+          style={{
+            ...fullScreen,
+            backgroundImage:`url(${backgroundImage.childImageSharp.fixed.src})`,
+            filter: "contrast(2) brightness(1.6)"
+          }}
+        />
         <canvas
           ref={canvasRef}
-          style={{
-            position: "fixed",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            display: "block",
-            backgroundImage:`url(${backgroundImage.childImageSharp.fixed.src})`,
-            backdropFilter: "contrast(1.4) brightness(1.0)"
-          }}
+          style={fullScreen}
         />
         <div
           style={{
