@@ -1,5 +1,6 @@
 import React, { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react";
 import { graphql, useStaticQuery } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 
 import { Header } from "../components/header";
 import { Footer } from "../components/footer";
@@ -13,19 +14,19 @@ const addImage = (src): Promise<HTMLImageElement> => {
   });
 };
 
-const draw = (ctx: CanvasRenderingContext2D, highlight, x, y) => {
-  const nearestX = Math.round(x / 500) * 500;
-  const nearestY = Math.round(y / 499) * 499;
-  const minX = nearestX - 500;
-  const minY = nearestY - 500;
+const draw = (ctx: CanvasRenderingContext2D, highlight: HTMLImageElement, x, y) => {
+  const nearestX = Math.round(x / highlight.width) * highlight.width;
+  const nearestY = Math.round(y / highlight.height) * highlight.height;
+  const minX = nearestX - highlight.width;
+  const minY = nearestY - highlight.height;
 
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
   ctx.globalCompositeOperation = "source-over";
-  ctx.drawImage(highlight, nearestX, nearestY);
-  ctx.drawImage(highlight, minX, nearestY);
-  ctx.drawImage(highlight, nearestX, minY);
   ctx.drawImage(highlight, minX, minY);
+  ctx.drawImage(highlight, nearestX, minY);
+  ctx.drawImage(highlight, minX, nearestY);
+  ctx.drawImage(highlight, nearestX, nearestY);
 
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, 300);
   gradient.addColorStop(0, "#b45309");
@@ -33,7 +34,7 @@ const draw = (ctx: CanvasRenderingContext2D, highlight, x, y) => {
 
   ctx.globalCompositeOperation = "source-in";
   ctx.fillStyle = gradient;
-  ctx.fillRect(minX, minY, 1000, 998);
+  ctx.fillRect(minX, minY, highlight.width * 2, highlight.height * 2);
 };
 
 const Layout: FC = ({ children }) => {
@@ -45,16 +46,12 @@ const Layout: FC = ({ children }) => {
     query {
       backgroundImage: file(relativePath: { eq: "cartographer.png" }) {
         childImageSharp {
-          fixed(width: 500, height: 499, background: "transparent") {
-            src
-          }
+          gatsbyImageData(layout: FIXED)
         }
       }
       highlightImage: file(relativePath: { eq: "cartographer-highlight.png" }) {
         childImageSharp {
-          fixed(width: 500, height: 499, background: "transparent") {
-            src
-          }
+          gatsbyImageData(layout: FIXED)
         }
       }
     }
@@ -70,7 +67,9 @@ const Layout: FC = ({ children }) => {
       draw(context, highlight, mouse.x, mouse.y);
     };
 
-    const initImage = async () => setImage(await addImage(highlightImage.childImageSharp.fixed.src));
+    console.log(highlightImage.childImageSharp);
+
+    const initImage = async () => setImage(await addImage(getSrc(highlightImage)));
 
     const updateLoc = (e) => setMouse({x: e.clientX, y: e.clientY});
 
@@ -105,7 +104,7 @@ const Layout: FC = ({ children }) => {
         <div
           style={{
             ...fullScreen,
-            backgroundImage: `url(${backgroundImage.childImageSharp.fixed.src})`,
+            backgroundImage: `url(${getSrc(backgroundImage)})`,
             filter: "contrast(2) brightness(1.6)",
           }}
         />
