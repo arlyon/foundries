@@ -13,18 +13,19 @@ const addImage = (src): Promise<HTMLImageElement> => {
   });
 };
 
-const draw = (canvas: HTMLCanvasElement, highlight, x, y) => {
-  const ctx = canvas.getContext("2d");
-  const width = (canvas.width = window.innerWidth);
-  const height = (canvas.height = window.innerHeight);
+const draw = (ctx: CanvasRenderingContext2D, highlight, x, y) => {
+  const nearestX = Math.round(x / 500) * 500;
+  const nearestY = Math.round(y / 499) * 499;
+  const minX = nearestX - 500;
+  const minY = nearestY - 500;
 
-  const nearestX = Math.round(x/500) * 500;
-  const nearestY = Math.round(y/499) * 499;
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+  ctx.globalCompositeOperation = "source-over";
   ctx.drawImage(highlight, nearestX, nearestY);
-  ctx.drawImage(highlight, nearestX - 500, nearestY);
-  ctx.drawImage(highlight, nearestX, nearestY - 499);
-  ctx.drawImage(highlight, nearestX - 500, nearestY - 499);
+  ctx.drawImage(highlight, minX, nearestY);
+  ctx.drawImage(highlight, nearestX, minY);
+  ctx.drawImage(highlight, minX, minY);
 
   const gradient = ctx.createRadialGradient(x, y, 0, x, y, 300);
   gradient.addColorStop(0, "#b45309");
@@ -32,13 +33,13 @@ const draw = (canvas: HTMLCanvasElement, highlight, x, y) => {
 
   ctx.globalCompositeOperation = "source-in";
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(minX, minY, 1000, 998);
 };
 
 const Layout: FC = ({ children }) => {
-  const canvasRef = useRef();
-  const [highlight, setImage] = useState<HTMLImageElement>();
-  const [[mouseX, mouseY], setMouseLoc] = useState([1000000, 1000000]);
+  const canvasRef = useRef<HTMLCanvasElement>();
+  const [highlight, setImage] = useState<HTMLImageElement | null>(null);
+  const [mouse, setMouse] = useState({x:100_000, y: 100_000});
 
   const { backgroundImage, highlightImage } = useStaticQuery(graphql`
     query {
@@ -59,27 +60,35 @@ const Layout: FC = ({ children }) => {
     }
   `);
 
+  const context = useMemo(() => canvasRef.current?.getContext("2d"), [canvasRef.current]);
+
   useEffect(() => {
-    (async () => {
-      setImage(await addImage(highlightImage.childImageSharp.fixed.src));
-    })();
+    const resize = () => {
+      canvasRef.current.width = window.innerWidth;
+      canvasRef.current.height = window.innerHeight;
+      if (highlight === null) return;
+      draw(context, highlight, mouse.x, mouse.y);
+    };
+
+    const initImage = async () => setImage(await addImage(highlightImage.childImageSharp.fixed.src));
+
+    const updateLoc = (e) => setMouse({x: e.clientX, y: e.clientY});
+
+    resize();
+    initImage();
+
+    document.addEventListener("mousemove", updateLoc);
+    window.addEventListener("resize", resize);
+    return () => {
+      document.removeEventListener("mousemove", updateLoc);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   useEffect(() => {
-    const updateLoc = (e) => setMouseLoc([e.clientX, e.clientY]);
-    const redraw = () => draw(canvasRef.current, highlight, mouseX, mouseY);
-    document.addEventListener("mousemove", updateLoc);
-    window.addEventListener("resize", redraw);
-    return () => {
-      document.removeEventListener("mousemove", updateLoc);
-      window.removeEventListener("resize", redraw);
-    };
-  });
-
-  useEffect(() => {
-    if (!canvasRef?.current || !highlight) return;
-    draw(canvasRef.current, highlight, mouseX, mouseY);
-  }, [canvasRef, highlight, mouseX, mouseY]);
+    if (!highlight) return;
+    draw(context, highlight, mouse.x, mouse.y);
+  }, [context, highlight, mouse]);
 
   const fullScreen: CSSProperties = {
     position: "fixed",
@@ -88,22 +97,19 @@ const Layout: FC = ({ children }) => {
     left: 0,
     right: 0,
     display: "block",
-  }
+  };
 
   return useMemo(
     () => (
       <div className="flex flex-col min-h-screen font-sans text-white bg-gradient-to-b from-black to-yellow-700">
-        <div 
+        <div
           style={{
             ...fullScreen,
-            backgroundImage:`url(${backgroundImage.childImageSharp.fixed.src})`,
-            filter: "contrast(2) brightness(1.6)"
+            backgroundImage: `url(${backgroundImage.childImageSharp.fixed.src})`,
+            filter: "contrast(2) brightness(1.6)",
           }}
         />
-        <canvas
-          ref={canvasRef}
-          style={fullScreen}
-        />
+        <canvas ref={canvasRef} style={fullScreen} />
         <div
           style={{
             zIndex: 10,
@@ -114,9 +120,7 @@ const Layout: FC = ({ children }) => {
           }}
         >
           <Header />
-          <main className="flex-1 w-full max-w-4xl px-4 py-8 mx-auto md:px-8 md:py-16">
-            {children}
-          </main>
+          <main className="flex-1 w-full max-w-4xl px-4 py-8 mx-auto md:px-8 md:py-16">{children}</main>
           <Footer />
         </div>
       </div>
