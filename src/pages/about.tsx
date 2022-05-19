@@ -80,6 +80,12 @@ const PersonCard: FC<PersonCardProps> = (props) => {
           </svg>
           <p className="px-2 text-sm">alex@foundries.dev</p>
         </div>
+        <a
+          href="https://calendly.com/arlyon"
+          className="text-white bg-blue-500 px-4 py-2 block text-center rounded-md mt-4 mx-auto"
+        >
+          Get in Touch
+        </a>
       </div>
     </div>
   );
