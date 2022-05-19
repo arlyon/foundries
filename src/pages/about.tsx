@@ -23,7 +23,7 @@ function AboutPage() {
       />
       <section className="items-center md:flex-row">
         <p>
-          We're a small firm delivering bespoke services to clients across
+          We&apos;re a small firm delivering bespoke services to clients across
           Europe and the United States. We started in early 2020 as a
           no-bullshit response to much of the bloated buzzwordy consultancy
           available today. Our pitch is simple: we are engineers for engineers.

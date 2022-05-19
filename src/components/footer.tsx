@@ -2,9 +2,13 @@ import React from "react";
 import { StaticImage } from "gatsby-plugin-image";
 
 export const Footer = () => {
-  const links = ["async-stripe", "aiobreaker", "bluenoise-rs"].map((name, index) => (
-    <li key={index}><a href={`https://github.com/arlyon/{name}`}>{name}</a></li>
-  ));
+  const links = ["async-stripe", "aiobreaker", "bluenoise-rs"].map(
+    (name, index) => (
+      <li key={index}>
+        <a href={`https://github.com/arlyon/{name}`}>{name}</a>
+      </li>
+    )
+  );
   return (
     <footer className="mt-auto pt-16">
       <div className="flex flex-col justify-between max-w-4xl p-4 mx-auto md:p-8">
@@ -45,8 +49,8 @@ export const Footer = () => {
           </div>
         </div>
         <p className="mt-16">
-          We're always looking for good people. If you want to work flexibly on
-          the cutting edge send us a message.
+          We&apos;re always looking for good people. If you want to work
+          flexibly on the cutting edge send us a message.
         </p>
         <hr className="my-16" />
         <div className="text-center mb-8">Copyright 2021 - Lyon Foundries</div>

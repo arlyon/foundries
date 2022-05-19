@@ -1,4 +1,11 @@
-import React, { CSSProperties, FC, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  CSSProperties,
+  FC,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { graphql, useStaticQuery } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 
@@ -7,14 +14,19 @@ import { Footer } from "../components/footer";
 
 const addImage = (src): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
-    let img = new Image();
+    const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = src;
   });
 };
 
-const draw = (ctx: CanvasRenderingContext2D, highlight: HTMLImageElement, x, y) => {
+const draw = (
+  ctx: CanvasRenderingContext2D,
+  highlight: HTMLImageElement,
+  x,
+  y
+) => {
   const nearestX = Math.round(x / highlight.width) * highlight.width;
   const nearestY = Math.round(y / highlight.height) * highlight.height;
   const minX = nearestX - highlight.width;
@@ -40,7 +52,7 @@ const draw = (ctx: CanvasRenderingContext2D, highlight: HTMLImageElement, x, y) 
 const Layout: FC = ({ children }) => {
   const canvasRef = useRef<HTMLCanvasElement>();
   const [highlight, setImage] = useState<HTMLImageElement | null>(null);
-  const [mouse, setMouse] = useState({x:100_000, y: 100_000});
+  const [mouse, setMouse] = useState({ x: 100_000, y: 100_000 });
 
   const { backgroundImage, highlightImage } = useStaticQuery(graphql`
     query {
@@ -57,7 +69,10 @@ const Layout: FC = ({ children }) => {
     }
   `);
 
-  const context = useMemo(() => canvasRef.current?.getContext("2d"), [canvasRef.current]);
+  const context = useMemo(
+    () => canvasRef.current?.getContext("2d"),
+    [canvasRef.current]
+  );
 
   useEffect(() => {
     const resize = () => {
@@ -69,9 +84,10 @@ const Layout: FC = ({ children }) => {
 
     console.log(highlightImage.childImageSharp);
 
-    const initImage = async () => setImage(await addImage(getSrc(highlightImage)));
+    const initImage = async () =>
+      setImage(await addImage(getSrc(highlightImage)));
 
-    const updateLoc = (e) => setMouse({x: e.clientX, y: e.clientY});
+    const updateLoc = (e) => setMouse({ x: e.clientX, y: e.clientY });
 
     resize();
     initImage();
@@ -119,7 +135,9 @@ const Layout: FC = ({ children }) => {
           }}
         >
           <Header />
-          <main className="flex-1 w-full max-w-4xl px-4 py-8 mx-auto md:px-8 md:py-16">{children}</main>
+          <main className="flex-1 w-full max-w-4xl px-4 py-8 mx-auto md:px-8 md:py-16">
+            {children}
+          </main>
           <Footer />
         </div>
       </div>

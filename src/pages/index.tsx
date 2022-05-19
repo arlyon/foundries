@@ -12,7 +12,7 @@ function IndexPage() {
         put Open Source first, utilising the immense power in the community to
         build fast, reliable software for humanity. If the idea of cutting edge
         solutions leveraging and supporting Open Source communities excites you,
-        we'd love to talk.{" "}
+        we&apos;d love to talk.{" "}
         <Link
           style={{ textDecoration: "underline" }}
           key={"Contact"}
@@ -25,12 +25,12 @@ function IndexPage() {
     ),
     ["Quality Engineering"]: (
       <>
-        Often, the best software is the code you never notice. It doesn't crash,
-        it doesn't drop out. It just works. We pick the tools that just work,
-        which means no expensive maintenance plan, and no need to call out one
-        of our engineers at 3am to diagnose a buggy service. This is why we are
-        constantly investing in new technologies such as Rust to keep ahead of
-        the curve.
+        Often, the best software is the code you never notice. It doesn&apos;t
+        crash, it doesn&apos;t drop out. It just works. We pick the tools that
+        just work, which means no expensive maintenance plan, and no need to
+        call out one of our engineers at 3am to diagnose a buggy service. This
+        is why we are constantly investing in new technologies such as Rust to
+        keep ahead of the curve.
       </>
     ),
     ["Happy People"]: (
@@ -62,8 +62,8 @@ function IndexPage() {
         <p className="text-lg mt-32">
           We offer consultancy and technical analysis across multiple domains in
           the software industry. Our team has experience with the entire
-          technical stack from hardware to cloud to the browser. Don't fit into
-          these boxes?{" "}
+          technical stack from hardware to cloud to the browser. Don&apos;t fit
+          into these boxes?{" "}
           <Link
             style={{ textDecoration: "underline" }}
             key={"Contact"}
@@ -71,7 +71,7 @@ function IndexPage() {
           >
             Get in touch
           </Link>{" "}
-          and we'll put you in contact with someone free of charge.
+          and we&apos;ll put you in contact with someone free of charge.
         </p>
         <div className="flex justify-center mt-16 text-2xl font-bold flex-wrap max-w-xl mx-auto">
           <a
